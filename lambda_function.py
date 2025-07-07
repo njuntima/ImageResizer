@@ -72,7 +72,7 @@ def lambda_handler(event, context):
                     }
                     
                 )
-                print('Succesful DynamoDB write')
+                #print('Succesful DynamoDB write')
         
         
     except Exception as e:
