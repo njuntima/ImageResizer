@@ -1,0 +1,9 @@
+venv/
+ImageResizerNotes/
+
+test.py
+
+venv/
+__pycache__/
+
+*.png
