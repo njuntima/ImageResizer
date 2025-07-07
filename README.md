@@ -1,7 +1,7 @@
-# Image Resizer (Serverless)
+# Assets/image Resizer (Serverless)
 
-System automatically resizes images uploaded to an S3 source bucket,
-stores a newly resized image into a destination bucket, and logs metadata
+System automatically resizes assets/images uploaded to an S3 source bucket,
+stores a newly resized assets/image into a destination bucket, and logs metadata
 of the operation into a DynamoDB table. Can debug problems using Cloudwatch Logs from the lambda function.
 System follows principal of least privilege.
 
@@ -10,7 +10,7 @@ Flow: Client upload -> S3 -> SQS -> Lambda -> [S3 + DynamoDB + Cloudwatch]
 ## Creating the DynamoDB Table
 
 Create an On-demand DynamoDB Table with partion key 'destKey' and sortKey 'timeUpload'
-![dynamoDBTable](image.png)
+![dynamoDBTable](assets/image.png)
 
 ## Creating the SQS Queues
 
@@ -30,11 +30,11 @@ Make 2 S3 buckets, one for the source and one for the destination
 2. Upload the ```lambda_function.py``` file as a .zip file to code source or copy the code into code source.
 3. Copy the ARN found using this git repo https://github.com/keithrozario/Klayers/tree/master/deployments using your region and version for Package: ```Pillow```. 
 4. Then go to Lamdba function page and select```Add a layer``` and then select ```Specify an ARN```. Copy and paste the ARN found from step 4. Then add layer.
-![lambda_layer](image-2.png)
+![lambda_layer](assets/image-2.png)
 5. Add the SQS queue via the ```Add trigger``` button. Should see figure 1 when done.
-![Trigger page](image-1.png)
+![Trigger page](assets/image-1.png)
 6. Go to ```Configuration``` in Lambda Home and then select ```Enviroment Variables```, then create 1 for the DynamoDB table with key 'db_table' and 1 for the destination bucket with key 'dest_bucket'.
-![env_variables](image-4.png)
+![env_variables](assets/image-4.png)
 
 
 
@@ -44,7 +44,7 @@ Make 2 S3 buckets, one for the source and one for the destination
 Note for editing permissions, will be using visual policy editor.
 
 1. Go to ```Configuration``` in Lambda Home and then select ```Permissions```, then select the exectution role.
-![lambda_permissions](image-3.png)
+![lambda_permissions](assets/image-3.png)
 2. Should be taken to IAM Page. Select ```Add Permissions``` then ```Create inline policy```
 
 #### S3 Permissions
@@ -69,7 +69,7 @@ Note for editing permissions, will be using visual policy editor.
 7. Under ```Add conditions (optional)``` choose ```StringEquals```, ```sourceAccount```, ```<YourAWSAccount>``` in ```Condition```, ```Key```, and ```Value``` respectively.
 8. Add another condition with ```ArnEquals```, ```sourceArn```, and ```<ARNofSourceBuckey>``` in ```Condition```, ```Key```, and ```Value``` respectively.
 9. Generate policy, then edit ```Principal``` so it looks like this:
-![principal](image-5.png)
+![principal](assets/image-5.png)
 10. Paste policy into ```Access Policy``` to your Main Queue.
 
 
